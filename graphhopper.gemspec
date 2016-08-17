@@ -6,8 +6,8 @@ Gem::Specification.new do |s|
   s.name        = "graphhopper"
   s.version     = GraphHopper::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Simon Stemplinger"]
-  s.email       = ["simon@liefery.com"]
+  s.authors     = ["Zeke Sikelianos", "Tony Tam". "Simon Stemplinger", "Paulo Diniz"]
+  s.email       = ["zeke@wordnik.com", "fehguy@gmail.com", "simon@liefery.com", "paulo.rc.diniz@gmail.com"]
   s.homepage    = "http://swagger.io"
   s.summary     = %q{A ruby wrapper for the swagger APIs}
   s.description = %q{This gem maps to a swagger API}
