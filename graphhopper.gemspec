@@ -6,11 +6,11 @@ Gem::Specification.new do |s|
   s.name        = "graphhopper"
   s.version     = GraphHopper::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Zeke Sikelianos", "Tony Tam". "Simon Stemplinger", "Paulo Diniz"]
-  s.email       = ["zeke@wordnik.com", "fehguy@gmail.com", "simon@liefery.com", "paulo.rc.diniz@gmail.com"]
-  s.homepage    = "http://swagger.io"
-  s.summary     = %q{A ruby wrapper for the swagger APIs}
-  s.description = %q{This gem maps to a swagger API}
+  s.authors     = ["Simon Stemplinger", "Paulo Diniz"]
+  s.email       = ["simon@liefery.com", "paulo.rc.diniz@gmail.com"]
+  s.homepage    = "https://graphhopper.com/"
+  s.summary     = %q{Client gem for Graphhopper}
+  s.description = %q{Client gem for Graphhopper}
   s.license     = "Apache-2.0"
 
   s.add_runtime_dependency 'typhoeus', '~> 0.2', '>= 0.2.1'
