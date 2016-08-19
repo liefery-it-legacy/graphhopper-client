@@ -56,16 +56,12 @@ module GraphHopper
 
       unless response.success?
         if response.timed_out?
-          fail ApiError.new('Connection timed out')
+          raise ApiError.new('Connection timed out')
         elsif response.code == 0
           # Errors from libcurl will be made visible here
-          fail ApiError.new(:code => 0,
-                            :message => response.return_message)
+          raise ApiError.new(response.return_message)
         else
-          fail ApiError.new(:code => response.code,
-                            :response_headers => response.headers,
-                            :response_body => response.body),
-               response.status_message
+          raise ApiError.new(response.body)
         end
       end
 
