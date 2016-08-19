@@ -41,10 +41,7 @@ module GraphHopper
       end
 
       unless response.success?
-        fail ApiError.new(:code => response.code,
-                          :response_headers => response.headers,
-                          :response_body => response.body),
-             response.status_message
+        raise ApiError.new(response.body)
       end
 
       if opts[:return_type]
