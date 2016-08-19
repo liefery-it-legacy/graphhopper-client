@@ -46,7 +46,7 @@ module GraphHopper
         :'time' => :'Integer',
         :'no_unassigned' => :'Integer',
         :'routes' => :'Array<Route>',
-        :'unassigned' => :'Solution_unassigned'
+        :'unassigned' => :'SolutionUnassigned'
         
       }
     end
