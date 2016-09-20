@@ -77,7 +77,7 @@ module GraphHopper
 
     # Custom attribute writer method checking allowed values (enum).
     def type=(type)
-      allowed_values = ["start", "end", "service", "pickupShipment", "deliverShipment"]
+      allowed_values = ["start", "end", "service", "pickupShipment", "deliverShipment", "pickup", "delivery"]
       if type && !allowed_values.include?(type)
         fail "invalid value for 'type', must be one of #{allowed_values}"
       end
