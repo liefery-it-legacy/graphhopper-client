@@ -97,7 +97,7 @@ module GraphHopper
       @base_path = '/api/1/vrp'
       @api_key = {}
       @api_key_prefix = {}
-      @timeout = 0
+      @timeout = 60
       @verify_ssl = true
       @cert_file = nil
       @key_file = nil
