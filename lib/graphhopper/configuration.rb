@@ -133,7 +133,7 @@ module GraphHopper
       @base_path = '/api/1'
       @api_key = {}
       @api_key_prefix = {}
-      @timeout = 0
+      @timeout = 60
       @client_side_validation = true
       @verify_ssl = true
       @verify_ssl_host = true
