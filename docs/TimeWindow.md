@@ -1,4 +1,4 @@
-# GraphHopperClient::TimeWindow
+# GraphHopper::TimeWindow
 
 ## Properties
 Name | Type | Description | Notes

@@ -1,4 +1,4 @@
-# GraphHopperClient::VrpApi
+# GraphHopper::VrpApi
 
 All URIs are relative to *https://graphhopper.com/api/1*
 
@@ -17,20 +17,20 @@ This endpoint for solving vehicle routing problems, i.e. traveling salesman or v
 ### Example
 ```ruby
 # load the gem
-require 'directions-api-client'
+require 'graphhopper'
 
-api_instance = GraphHopperClient::VrpApi.new
+api_instance = GraphHopper::VrpApi.new
 
 key = "key_example" # String | your API key
 
-body = GraphHopperClient::Request.new # Request | Request object that contains the problem to be solved
+body = GraphHopper::Request.new # Request | Request object that contains the problem to be solved
 
 
 begin
   #Solves vehicle routing problems
   result = api_instance.post_vrp(key, body)
   p result
-rescue GraphHopperClient::ApiError => e
+rescue GraphHopper::ApiError => e
   puts "Exception when calling VrpApi->post_vrp: #{e}"
 end
 ```

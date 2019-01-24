@@ -1,4 +1,4 @@
-# GraphHopperClient::CostMatrixDataInfo
+# GraphHopper::CostMatrixDataInfo
 
 ## Properties
 Name | Type | Description | Notes

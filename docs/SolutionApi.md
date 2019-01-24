@@ -1,4 +1,4 @@
-# GraphHopperClient::SolutionApi
+# GraphHopper::SolutionApi
 
 All URIs are relative to *https://graphhopper.com/api/1*
 
@@ -17,9 +17,9 @@ This endpoint returns the solution of a large problems. You can fetch it with th
 ### Example
 ```ruby
 # load the gem
-require 'directions-api-client'
+require 'graphhopper'
 
-api_instance = GraphHopperClient::SolutionApi.new
+api_instance = GraphHopper::SolutionApi.new
 
 key = "key_example" # String | your API key
 
@@ -30,7 +30,7 @@ begin
   #Return the solution associated to the jobId
   result = api_instance.get_solution(key, job_id)
   p result
-rescue GraphHopperClient::ApiError => e
+rescue GraphHopper::ApiError => e
   puts "Exception when calling SolutionApi->get_solution: #{e}"
 end
 ```

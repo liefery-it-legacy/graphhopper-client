@@ -1,4 +1,4 @@
-# GraphHopperClient::Stop
+# GraphHopper::Stop
 
 ## Properties
 Name | Type | Description | Notes

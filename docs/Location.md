@@ -1,4 +1,4 @@
-# GraphHopperClient::Location
+# GraphHopper::Location
 
 ## Properties
 Name | Type | Description | Notes

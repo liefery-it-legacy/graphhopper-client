@@ -1,6 +1,6 @@
 # graphhopper-client
 
-GraphHopperClient - the Ruby gem for the GraphHopper Directions API
+GraphHopper - the Ruby gem for the GraphHopper Directions API
 
 You use the GraphHopper Directions API to add route planning, navigation and route optimization to your software. E.g. the Routing API has turn instructions and elevation data and the Route Optimization API solves your logistic problems and supports various constraints like time window and capacity restrictions. Also it is possible to get all distances between all locations with our fast Matrix API.
 
@@ -17,60 +17,60 @@ All URIs are relative to *https://graphhopper.com/api/1*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*GraphHopperClient::GeocodingApi* | [**geocode_get**](docs/GeocodingApi.md#geocode_get) | **GET** /geocode | Execute a Geocoding request
-*GraphHopperClient::IsochroneApi* | [**isochrone_get**](docs/IsochroneApi.md#isochrone_get) | **GET** /isochrone | Isochrone Request
-*GraphHopperClient::MatrixApi* | [**matrix_get**](docs/MatrixApi.md#matrix_get) | **GET** /matrix | Matrix API
-*GraphHopperClient::MatrixApi* | [**matrix_post**](docs/MatrixApi.md#matrix_post) | **POST** /matrix | Matrix API Post
-*GraphHopperClient::RoutingApi* | [**route_get**](docs/RoutingApi.md#route_get) | **GET** /route | Routing Request
-*GraphHopperClient::SolutionApi* | [**get_solution**](docs/SolutionApi.md#get_solution) | **GET** /vrp/solution/{jobId} | Return the solution associated to the jobId
-*GraphHopperClient::VrpApi* | [**post_vrp**](docs/VrpApi.md#post_vrp) | **POST** /vrp/optimize | Solves vehicle routing problems
+*GraphHopper::GeocodingApi* | [**geocode_get**](docs/GeocodingApi.md#geocode_get) | **GET** /geocode | Execute a Geocoding request
+*GraphHopper::IsochroneApi* | [**isochrone_get**](docs/IsochroneApi.md#isochrone_get) | **GET** /isochrone | Isochrone Request
+*GraphHopper::MatrixApi* | [**matrix_get**](docs/MatrixApi.md#matrix_get) | **GET** /matrix | Matrix API
+*GraphHopper::MatrixApi* | [**matrix_post**](docs/MatrixApi.md#matrix_post) | **POST** /matrix | Matrix API Post
+*GraphHopper::RoutingApi* | [**route_get**](docs/RoutingApi.md#route_get) | **GET** /route | Routing Request
+*GraphHopper::SolutionApi* | [**get_solution**](docs/SolutionApi.md#get_solution) | **GET** /vrp/solution/{jobId} | Return the solution associated to the jobId
+*GraphHopper::VrpApi* | [**post_vrp**](docs/VrpApi.md#post_vrp) | **POST** /vrp/optimize | Solves vehicle routing problems
 
 
 ## Documentation for Models
 
- - [GraphHopperClient::Activity](docs/Activity.md)
- - [GraphHopperClient::Address](docs/Address.md)
- - [GraphHopperClient::Configuration](docs/Configuration.md)
- - [GraphHopperClient::CostMatrix](docs/CostMatrix.md)
- - [GraphHopperClient::CostMatrixData](docs/CostMatrixData.md)
- - [GraphHopperClient::CostMatrixDataInfo](docs/CostMatrixDataInfo.md)
- - [GraphHopperClient::Detail](docs/Detail.md)
- - [GraphHopperClient::GHError](docs/GHError.md)
- - [GraphHopperClient::GHErrorHints](docs/GHErrorHints.md)
- - [GraphHopperClient::GeocodingLocation](docs/GeocodingLocation.md)
- - [GraphHopperClient::GeocodingPoint](docs/GeocodingPoint.md)
- - [GraphHopperClient::GeocodingResponse](docs/GeocodingResponse.md)
- - [GraphHopperClient::IsochroneResponse](docs/IsochroneResponse.md)
- - [GraphHopperClient::IsochroneResponsePolygon](docs/IsochroneResponsePolygon.md)
- - [GraphHopperClient::IsochroneResponsePolygonGeometry](docs/IsochroneResponsePolygonGeometry.md)
- - [GraphHopperClient::IsochroneResponsePolygonProperties](docs/IsochroneResponsePolygonProperties.md)
- - [GraphHopperClient::JobId](docs/JobId.md)
- - [GraphHopperClient::Location](docs/Location.md)
- - [GraphHopperClient::MatrixRequest](docs/MatrixRequest.md)
- - [GraphHopperClient::MatrixResponse](docs/MatrixResponse.md)
- - [GraphHopperClient::ModelBreak](docs/ModelBreak.md)
- - [GraphHopperClient::Objective](docs/Objective.md)
- - [GraphHopperClient::Relation](docs/Relation.md)
- - [GraphHopperClient::Request](docs/Request.md)
- - [GraphHopperClient::Response](docs/Response.md)
- - [GraphHopperClient::ResponseCoordinates](docs/ResponseCoordinates.md)
- - [GraphHopperClient::ResponseCoordinatesArray](docs/ResponseCoordinatesArray.md)
- - [GraphHopperClient::ResponseInfo](docs/ResponseInfo.md)
- - [GraphHopperClient::ResponseInstruction](docs/ResponseInstruction.md)
- - [GraphHopperClient::ResponseInstructions](docs/ResponseInstructions.md)
- - [GraphHopperClient::Route](docs/Route.md)
- - [GraphHopperClient::RoutePoint](docs/RoutePoint.md)
- - [GraphHopperClient::RouteResponse](docs/RouteResponse.md)
- - [GraphHopperClient::RouteResponsePath](docs/RouteResponsePath.md)
- - [GraphHopperClient::Routing](docs/Routing.md)
- - [GraphHopperClient::Service](docs/Service.md)
- - [GraphHopperClient::Shipment](docs/Shipment.md)
- - [GraphHopperClient::Solution](docs/Solution.md)
- - [GraphHopperClient::SolutionUnassigned](docs/SolutionUnassigned.md)
- - [GraphHopperClient::Stop](docs/Stop.md)
- - [GraphHopperClient::TimeWindow](docs/TimeWindow.md)
- - [GraphHopperClient::Vehicle](docs/Vehicle.md)
- - [GraphHopperClient::VehicleType](docs/VehicleType.md)
+ - [GraphHopper::Activity](docs/Activity.md)
+ - [GraphHopper::Address](docs/Address.md)
+ - [GraphHopper::Configuration](docs/Configuration.md)
+ - [GraphHopper::CostMatrix](docs/CostMatrix.md)
+ - [GraphHopper::CostMatrixData](docs/CostMatrixData.md)
+ - [GraphHopper::CostMatrixDataInfo](docs/CostMatrixDataInfo.md)
+ - [GraphHopper::Detail](docs/Detail.md)
+ - [GraphHopper::GHError](docs/GHError.md)
+ - [GraphHopper::GHErrorHints](docs/GHErrorHints.md)
+ - [GraphHopper::GeocodingLocation](docs/GeocodingLocation.md)
+ - [GraphHopper::GeocodingPoint](docs/GeocodingPoint.md)
+ - [GraphHopper::GeocodingResponse](docs/GeocodingResponse.md)
+ - [GraphHopper::IsochroneResponse](docs/IsochroneResponse.md)
+ - [GraphHopper::IsochroneResponsePolygon](docs/IsochroneResponsePolygon.md)
+ - [GraphHopper::IsochroneResponsePolygonGeometry](docs/IsochroneResponsePolygonGeometry.md)
+ - [GraphHopper::IsochroneResponsePolygonProperties](docs/IsochroneResponsePolygonProperties.md)
+ - [GraphHopper::JobId](docs/JobId.md)
+ - [GraphHopper::Location](docs/Location.md)
+ - [GraphHopper::MatrixRequest](docs/MatrixRequest.md)
+ - [GraphHopper::MatrixResponse](docs/MatrixResponse.md)
+ - [GraphHopper::ModelBreak](docs/ModelBreak.md)
+ - [GraphHopper::Objective](docs/Objective.md)
+ - [GraphHopper::Relation](docs/Relation.md)
+ - [GraphHopper::Request](docs/Request.md)
+ - [GraphHopper::Response](docs/Response.md)
+ - [GraphHopper::ResponseCoordinates](docs/ResponseCoordinates.md)
+ - [GraphHopper::ResponseCoordinatesArray](docs/ResponseCoordinatesArray.md)
+ - [GraphHopper::ResponseInfo](docs/ResponseInfo.md)
+ - [GraphHopper::ResponseInstruction](docs/ResponseInstruction.md)
+ - [GraphHopper::ResponseInstructions](docs/ResponseInstructions.md)
+ - [GraphHopper::Route](docs/Route.md)
+ - [GraphHopper::RoutePoint](docs/RoutePoint.md)
+ - [GraphHopper::RouteResponse](docs/RouteResponse.md)
+ - [GraphHopper::RouteResponsePath](docs/RouteResponsePath.md)
+ - [GraphHopper::Routing](docs/Routing.md)
+ - [GraphHopper::Service](docs/Service.md)
+ - [GraphHopper::Shipment](docs/Shipment.md)
+ - [GraphHopper::Solution](docs/Solution.md)
+ - [GraphHopper::SolutionUnassigned](docs/SolutionUnassigned.md)
+ - [GraphHopper::Stop](docs/Stop.md)
+ - [GraphHopper::TimeWindow](docs/TimeWindow.md)
+ - [GraphHopper::Vehicle](docs/Vehicle.md)
+ - [GraphHopper::VehicleType](docs/VehicleType.md)
 
 
 ## Documentation for Authorization

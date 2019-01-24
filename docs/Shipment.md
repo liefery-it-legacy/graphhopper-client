@@ -1,4 +1,4 @@
-# GraphHopperClient::Shipment
+# GraphHopper::Shipment
 
 ## Properties
 Name | Type | Description | Notes

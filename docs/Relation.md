@@ -1,4 +1,4 @@
-# GraphHopperClient::Relation
+# GraphHopper::Relation
 
 ## Properties
 Name | Type | Description | Notes

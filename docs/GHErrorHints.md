@@ -1,4 +1,4 @@
-# GraphHopperClient::GHErrorHints
+# GraphHopper::GHErrorHints
 
 ## Properties
 Name | Type | Description | Notes

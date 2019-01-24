@@ -1,4 +1,4 @@
-# GraphHopperClient::VehicleType
+# GraphHopper::VehicleType
 
 ## Properties
 Name | Type | Description | Notes

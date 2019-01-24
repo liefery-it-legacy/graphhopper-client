@@ -1,4 +1,4 @@
-# GraphHopperClient::Routing
+# GraphHopper::Routing
 
 ## Properties
 Name | Type | Description | Notes

@@ -12,14 +12,14 @@ Swagger Codegen version: 2.4.0-SNAPSHOT
 
 require 'spec_helper'
 
-describe GraphHopperClient::Configuration do
-  let(:config) { GraphHopperClient::Configuration.default }
+describe GraphHopper::Configuration do
+  let(:config) { GraphHopper::Configuration.default }
 
   before(:each) do
     # uncomment below to setup host and base_path
     #require 'URI'
     #uri = URI.parse("https://graphhopper.com/api/1")
-    #GraphHopperClient.configure do |c|
+    #GraphHopper.configure do |c|
     #  c.host = uri.host
     #  c.base_path = uri.path
     #end

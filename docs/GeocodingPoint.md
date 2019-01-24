@@ -1,4 +1,4 @@
-# GraphHopperClient::GeocodingPoint
+# GraphHopper::GeocodingPoint
 
 ## Properties
 Name | Type | Description | Notes

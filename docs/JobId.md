@@ -1,4 +1,4 @@
-# GraphHopperClient::JobId
+# GraphHopper::JobId
 
 ## Properties
 Name | Type | Description | Notes

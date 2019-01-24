@@ -1,4 +1,4 @@
-# GraphHopperClient::ResponseCoordinatesArray
+# GraphHopper::ResponseCoordinatesArray
 
 ## Properties
 Name | Type | Description | Notes

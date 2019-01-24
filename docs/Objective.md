@@ -1,4 +1,4 @@
-# GraphHopperClient::Objective
+# GraphHopper::Objective
 
 ## Properties
 Name | Type | Description | Notes

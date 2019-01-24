@@ -1,4 +1,4 @@
-# GraphHopperClient::ResponseInfo
+# GraphHopper::ResponseInfo
 
 ## Properties
 Name | Type | Description | Notes

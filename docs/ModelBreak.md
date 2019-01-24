@@ -1,4 +1,4 @@
-# GraphHopperClient::ModelBreak
+# GraphHopper::ModelBreak
 
 ## Properties
 Name | Type | Description | Notes

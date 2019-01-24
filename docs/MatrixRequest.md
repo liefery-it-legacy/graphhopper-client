@@ -1,4 +1,4 @@
-# GraphHopperClient::MatrixRequest
+# GraphHopper::MatrixRequest
 
 ## Properties
 Name | Type | Description | Notes

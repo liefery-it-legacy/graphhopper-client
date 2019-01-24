@@ -1,4 +1,4 @@
-# GraphHopperClient::IsochroneResponsePolygon
+# GraphHopper::IsochroneResponsePolygon
 
 ## Properties
 Name | Type | Description | Notes

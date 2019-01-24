@@ -1,4 +1,4 @@
-# GraphHopperClient::ResponseInstruction
+# GraphHopper::ResponseInstruction
 
 ## Properties
 Name | Type | Description | Notes

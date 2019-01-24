@@ -1,4 +1,4 @@
-# GraphHopperClient::SolutionUnassigned
+# GraphHopper::SolutionUnassigned
 
 ## Properties
 Name | Type | Description | Notes

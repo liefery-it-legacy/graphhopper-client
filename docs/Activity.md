@@ -1,4 +1,4 @@
-# GraphHopperClient::Activity
+# GraphHopper::Activity
 
 ## Properties
 Name | Type | Description | Notes

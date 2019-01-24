@@ -1,4 +1,4 @@
-# GraphHopperClient::MatrixResponse
+# GraphHopper::MatrixResponse
 
 ## Properties
 Name | Type | Description | Notes
