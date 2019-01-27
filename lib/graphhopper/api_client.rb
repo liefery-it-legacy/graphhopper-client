@@ -7,7 +7,7 @@ require 'uri'
 
 module GraphHopper
   class ApiClient
-    # The Configuration object holding settings to be used in the API client.
+    # The GemConfiguration object holding settings to be used in the API client.
     attr_accessor :config
 
     # Defines the headers to be used in HTTP requests of all API calls by default.
@@ -16,8 +16,9 @@ module GraphHopper
     attr_accessor :default_headers
 
     # Initializes the ApiClient
-    # @option config [Configuration] Configuration for initializing the object, default to Configuration.default
-    def initialize(config = Configuration.default)
+    # @option config [GemConfiguration] GemConfiguration for initializing the object,
+    # default to GemConfiguration.default
+    def initialize(config = GemConfiguration.default)
       @config = config
       @user_agent = "Swagger-Codegen/#{VERSION}/ruby"
       @default_headers = {
@@ -206,7 +207,7 @@ module GraphHopper
     # size is larger than maximum Ruby String or even larger than the maximum memory a Ruby
     # process can use.
     #
-    # @see Configuration#temp_folder_path
+    # @see GemConfiguration#temp_folder_path
     def download_file(request)
       tempfile = nil
       encoding = nil

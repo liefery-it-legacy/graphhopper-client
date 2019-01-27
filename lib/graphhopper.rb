@@ -2,7 +2,7 @@
 require 'graphhopper/api_client'
 require 'graphhopper/api_error'
 require 'graphhopper/version'
-require 'graphhopper/configuration'
+require 'graphhopper/gem_configuration'
 
 # Models
 require 'graphhopper/models/activity'
@@ -64,12 +64,12 @@ module GraphHopper
     #     config.username = "xxx"
     #     config.password = "xxx"
     #   end
-    # If no block given, return the default Configuration object.
+    # If no block given, return the default GemConfiguration object.
     def configure
       if block_given?
-        yield(Configuration.default)
+        yield(GemConfiguration.default)
       else
-        Configuration.default
+        GemConfiguration.default
       end
     end
   end

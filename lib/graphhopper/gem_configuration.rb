@@ -1,7 +1,7 @@
 require 'uri'
 
 module GraphHopper
-  class Configuration
+  class GemConfiguration
     # Defines url scheme
     attr_accessor :scheme
 
@@ -136,9 +136,9 @@ module GraphHopper
       yield(self) if block_given?
     end
 
-    # The default Configuration object.
+    # The default GemConfiguration object.
     def self.default
-      @@default ||= Configuration.new
+      @@default ||= GemConfiguration.new
     end
 
     def configure
