@@ -7,7 +7,7 @@ require 'uri'
 
 module GraphHopper
   class ApiClient
-    # The Configuration object holding settings to be used in the API client.
+    # The GemConfiguration object holding settings to be used in the API client.
     attr_accessor :config
 
     # Defines the headers to be used in HTTP requests of all API calls by default.
@@ -15,9 +15,12 @@ module GraphHopper
     # @return [Hash]
     attr_accessor :default_headers
 
-    def initialize(config = Configuration.default)
+    # Initializes the ApiClient
+    # @option config [GemConfiguration] GemConfiguration for initializing the object,
+    # default to GemConfiguration.default
+    def initialize(config = GemConfiguration.default)
       @config = config
-      @user_agent = "ruby-swagger-#{VERSION}"
+      @user_agent = "Swagger-Codegen/#{VERSION}/ruby"
       @default_headers = {
         'Content-Type' => "application/json",
         'User-Agent' => @user_agent
@@ -41,7 +44,14 @@ module GraphHopper
       end
 
       unless response.success?
-        raise ApiError.new(response.body)
+        if response.timed_out?
+          raise ApiError.new('Connection timed out')
+        elsif response.code == 0
+          # Errors from libcurl will be made visible here
+          raise ApiError.new(response.return_message)
+        else
+          raise ApiError.new(response.body)
+        end
       end
 
       if opts[:return_type]
@@ -52,6 +62,15 @@ module GraphHopper
       return data, response.code, response.headers
     end
 
+    # Builds the HTTP request
+    #
+    # @param [String] http_method HTTP method/verb (e.g. POST)
+    # @param [String] path URL path (e.g. /account/new)
+    # @option opts [Hash] :header_params Header parameters
+    # @option opts [Hash] :query_params Query parameters
+    # @option opts [Hash] :form_params Query parameters
+    # @option opts [Object] :body HTTP body (JSON/XML)
+    # @return [Typhoeus::Request] A Typhoeus Request
     def build_request(http_method, path, opts = {})
       url = build_request_url(path)
       http_method = http_method.to_sym.downcase
@@ -60,21 +79,26 @@ module GraphHopper
       query_params = opts[:query_params] || {}
       form_params = opts[:form_params] || {}
 
-      
       update_params_for_auth! header_params, query_params, opts[:auth_names]
-      
+
+      # set ssl_verifyhosts option based on @config.verify_ssl_host (true/false)
+      _verify_ssl_host = @config.verify_ssl_host ? 2 : 0
 
       req_opts = {
         :method => http_method,
         :headers => header_params,
         :params => query_params,
+        :params_encoding => @config.params_encoding,
         :timeout => @config.timeout,
         :ssl_verifypeer => @config.verify_ssl,
+        :ssl_verifyhost => _verify_ssl_host,
         :sslcert => @config.cert_file,
         :sslkey => @config.key_file,
-        :cainfo => @config.ssl_ca_cert,
         :verbose => @config.debugging
       }
+
+      # set custom cert, if provided
+      req_opts[:cainfo] = @config.ssl_ca_cert if @config.ssl_ca_cert
 
       if [:post, :patch, :put, :delete].include?(http_method)
         req_body = build_request_body(header_params, form_params, opts[:body])
@@ -84,7 +108,9 @@ module GraphHopper
         end
       end
 
-      Typhoeus::Request.new(url, req_opts)
+      request = Typhoeus::Request.new(url, req_opts)
+      download_file(request) if opts[:return_type] == 'File'
+      request
     end
 
     # Check if the given MIME is a JSON MIME.
@@ -92,19 +118,28 @@ module GraphHopper
     #   application/json
     #   application/json; charset=UTF8
     #   APPLICATION/JSON
+    #   */*
+    # @param [String] mime MIME
+    # @return [Boolean] True if the MIME is application/json
     def json_mime?(mime)
-       !!(mime =~ /\Aapplication\/json(;.*)?\z/i)
+       (mime == "*/*") || !(mime =~ /Application\/.*json(?!p)(;.*)?/i).nil?
     end
 
     # Deserialize the response to the given return type.
     #
+    # @param [Response] response HTTP response
     # @param [String] return_type some examples: "User", "Array[User]", "Hash[String,Integer]"
     def deserialize(response, return_type)
       body = response.body
+
+      # handle file downloading - return the File instance processed in request callbacks
+      # note that response body is empty when the file is written in chunks in request on_body callback
+      return @tempfile if return_type == 'File'
+
       return nil if body.nil? || body.empty?
 
-      # handle file downloading - save response body into a tmp file and return the File instance
-      return download_file(response) if return_type == 'File'
+      # return response body directly for String return type
+      return body if return_type == 'String'
 
       # ensuring a default content type
       content_type = response.headers['Content-Type'] || 'application/json'
@@ -125,6 +160,9 @@ module GraphHopper
     end
 
     # Convert data to the given return type.
+    # @param [Object] data Data to be converted
+    # @param [String] return_type Return type
+    # @return [Mixed] Data in a particular type
     def convert_to_type(data, return_type)
       return nil if data.nil?
       case return_type
@@ -143,7 +181,7 @@ module GraphHopper
         # parse date time (expecting ISO 8601 format)
         Date.parse data
       when 'Object'
-        # generic object, return directly
+        # generic object (usually a Hash), return directly
         data
       when /\AArray<(.+)>\z/
         # e.g. Array<Pet>
@@ -165,25 +203,47 @@ module GraphHopper
 
     # Save response body into a file in (the defined) temporary folder, using the filename
     # from the "Content-Disposition" header if provided, otherwise a random filename.
+    # The response body is written to the file in chunks in order to handle files which
+    # size is larger than maximum Ruby String or even larger than the maximum memory a Ruby
+    # process can use.
     #
-    # @see Configuration#temp_folder_path
-    # @return [File] the file downloaded
-    def download_file(response)
-      tmp_file = Tempfile.new '', @config.temp_folder_path
-      content_disposition = response.headers['Content-Disposition']
-      if content_disposition
-        filename = content_disposition[/filename=['"]?([^'"\s]+)['"]?/, 1]
-        path = File.join File.dirname(tmp_file), filename
-      else
-        path = tmp_file.path
+    # @see GemConfiguration#temp_folder_path
+    def download_file(request)
+      tempfile = nil
+      encoding = nil
+      request.on_headers do |response|
+        content_disposition = response.headers['Content-Disposition']
+        if content_disposition and content_disposition =~ /filename=/i
+          filename = content_disposition[/filename=['"]?([^'"\s]+)['"]?/, 1]
+          prefix = sanitize_filename(filename)
+        else
+          prefix = 'download-'
+        end
+        prefix = prefix + '-' unless prefix.end_with?('-')
+        encoding = response.body.encoding
+        tempfile = Tempfile.open(prefix, @config.temp_folder_path, encoding: encoding)
+        @tempfile = tempfile
       end
-      # close and delete temp file
-      tmp_file.close!
+      request.on_body do |chunk|
+        chunk.force_encoding(encoding)
+        tempfile.write(chunk)
+      end
+      request.on_complete do |response|
+        tempfile.close
+        @config.logger.info "Temp file written to #{tempfile.path}, please copy the file to a proper folder "\
+                            "with e.g. `FileUtils.cp(tempfile.path, '/new/file/path')` otherwise the temp file "\
+                            "will be deleted automatically with GC. It's also recommended to delete the temp file "\
+                            "explicitly with `tempfile.delete`"
+      end
+    end
 
-      File.open(path, 'w') { |file| file.write(response.body) }
-      @config.logger.info "File written to #{path}. Please move the file to a proper folder "\
-                          "for further processing and delete the temp afterwards"
-      File.new(path)
+    # Sanitize filename by removing path.
+    # e.g. ../../sun.gif becomes sun.gif
+    #
+    # @param [String] filename the filename to be sanitized
+    # @return [String] the sanitized filename
+    def sanitize_filename(filename)
+      filename.gsub(/.*[\/\\]/, '')
     end
 
     def build_request_url(path)
@@ -192,6 +252,12 @@ module GraphHopper
       URI.encode(@config.base_url + path)
     end
 
+    # Builds the HTTP request body
+    #
+    # @param [Hash] header_params Header parameters
+    # @param [Hash] form_params Query parameters
+    # @param [Object] body HTTP body (JSON/XML)
+    # @return [String] HTTP body data in the form of string
     def build_request_body(header_params, form_params, body)
       # http form
       if header_params['Content-Type'] == 'application/x-www-form-urlencoded' ||
@@ -199,7 +265,7 @@ module GraphHopper
         data = {}
         form_params.each do |key, value|
           case value
-          when File, Array, nil
+          when ::File, ::Array, nil
             # let typhoeus handle File, Array and nil parameters
             data[key] = value
           else
@@ -215,6 +281,10 @@ module GraphHopper
     end
 
     # Update hearder and query params based on authentication settings.
+    #
+    # @param [Hash] header_params Header parameters
+    # @param [Hash] query_params Query parameters
+    # @param [String] auth_names Authentication scheme name
     def update_params_for_auth!(header_params, query_params, auth_names)
       Array(auth_names).each do |auth_name|
         auth_setting = @config.auth_settings[auth_name]
@@ -227,6 +297,9 @@ module GraphHopper
       end
     end
 
+    # Sets user agent in HTTP header
+    #
+    # @param [String] user_agent User agent (e.g. swagger-codegen/ruby/1.0.0)
     def user_agent=(user_agent)
       @user_agent = user_agent
       @default_headers['User-Agent'] = @user_agent
@@ -257,14 +330,14 @@ module GraphHopper
     # @param [Object] model object to be converted into JSON string
     # @return [String] JSON string representation of the object
     def object_to_http_body(model)
-      return if model.nil?
-      _body = nil
+      return model if model.nil? || model.is_a?(String)
+      local_body = nil
       if model.is_a?(Array)
-        _body = model.map{|m| object_to_hash(m) }
+        local_body = model.map{|m| object_to_hash(m) }
       else
-        _body = object_to_hash(model)
+        local_body = object_to_hash(model)
       end
-      _body.to_json
+      local_body.to_json
     end
 
     # Convert object(non-array) to hash.

@@ -1,6 +1,7 @@
 require 'date'
 
 module GraphHopper
+
   class Vehicle
     # Unique identifier of vehicle
     attr_accessor :vehicle_id
@@ -26,28 +27,35 @@ module GraphHopper
     # array of skills
     attr_accessor :skills
 
+    # max distance of vehicle
+    attr_accessor :max_distance
+
+    # max drive time of vehicle
+    attr_accessor :max_driving_time
+
+    # max number of jobs the vehicle can load
+    attr_accessor :max_jobs
+
+    # max number of activities the vehicle can conduct
+    attr_accessor :max_activities
+
+
     # Attribute mapping from ruby-style variable name to JSON key.
     def self.attribute_map
       {
-        
         :'vehicle_id' => :'vehicle_id',
-        
         :'type_id' => :'type_id',
-        
         :'start_address' => :'start_address',
-        
         :'end_address' => :'end_address',
-        
         :'_break' => :'break',
-        
         :'return_to_depot' => :'return_to_depot',
-        
         :'earliest_start' => :'earliest_start',
-        
         :'latest_end' => :'latest_end',
-        
-        :'skills' => :'skills'
-        
+        :'skills' => :'skills',
+        :'max_distance' => :'max_distance',
+        :'max_driving_time' => :'max_driving_time',
+        :'max_jobs' => :'max_jobs',
+        :'max_activities' => :'max_activities'
       }
     end
 
@@ -58,63 +66,97 @@ module GraphHopper
         :'type_id' => :'String',
         :'start_address' => :'Address',
         :'end_address' => :'Address',
-        :'_break' => :'Break',
+        :'_break' => :'ModelBreak',
         :'return_to_depot' => :'BOOLEAN',
         :'earliest_start' => :'Integer',
         :'latest_end' => :'Integer',
-        :'skills' => :'Array<String>'
-        
+        :'skills' => :'Array<String>',
+        :'max_distance' => :'Integer',
+        :'max_driving_time' => :'Integer',
+        :'max_jobs' => :'Integer',
+        :'max_activities' => :'Integer'
       }
     end
 
+    # Initializes the object
+    # @param [Hash] attributes Model attributes in the form of hash
     def initialize(attributes = {})
       return unless attributes.is_a?(Hash)
 
       # convert string to symbol for hash key
-      attributes = attributes.inject({}){|memo,(k,v)| memo[k.to_sym] = v; memo}
+      attributes = attributes.each_with_object({}){|(k,v), h| h[k.to_sym] = v}
 
-      
-      if attributes[:'vehicle_id']
+      if attributes.has_key?(:'vehicle_id')
         self.vehicle_id = attributes[:'vehicle_id']
       end
-      
-      if attributes[:'type_id']
+
+      if attributes.has_key?(:'type_id')
         self.type_id = attributes[:'type_id']
       end
-      
-      if attributes[:'start_address']
+
+      if attributes.has_key?(:'start_address')
         self.start_address = attributes[:'start_address']
       end
-      
-      if attributes[:'end_address']
+
+      if attributes.has_key?(:'end_address')
         self.end_address = attributes[:'end_address']
       end
-      
-      if attributes[:'break']
+
+      if attributes.has_key?(:'break')
         self._break = attributes[:'break']
       end
-      
-      if attributes[:'return_to_depot']
+
+      if attributes.has_key?(:'return_to_depot')
         self.return_to_depot = attributes[:'return_to_depot']
       end
-      
-      if attributes[:'earliest_start']
+
+      if attributes.has_key?(:'earliest_start')
         self.earliest_start = attributes[:'earliest_start']
       end
-      
-      if attributes[:'latest_end']
+
+      if attributes.has_key?(:'latest_end')
         self.latest_end = attributes[:'latest_end']
       end
-      
-      if attributes[:'skills']
+
+      if attributes.has_key?(:'skills')
         if (value = attributes[:'skills']).is_a?(Array)
           self.skills = value
         end
       end
-      
+
+      if attributes.has_key?(:'max_distance')
+        self.max_distance = attributes[:'max_distance']
+      end
+
+      if attributes.has_key?(:'max_driving_time')
+        self.max_driving_time = attributes[:'max_driving_time']
+      end
+
+      if attributes.has_key?(:'max_jobs')
+        self.max_jobs = attributes[:'max_jobs']
+      end
+
+      if attributes.has_key?(:'max_activities')
+        self.max_activities = attributes[:'max_activities']
+      end
+
     end
 
-    # Check equality by comparing each attribute.
+    # Show invalid properties with the reasons. Usually used together with valid?
+    # @return Array for valid properties with the reasons
+    def list_invalid_properties
+      invalid_properties = Array.new
+      return invalid_properties
+    end
+
+    # Check to see if the all the properties in the model are valid
+    # @return true if the model is valid
+    def valid?
+      return true
+    end
+
+    # Checks equality by comparing each attribute.
+    # @param [Object] Object to be compared
     def ==(o)
       return true if self.equal?(o)
       self.class == o.class &&
@@ -126,39 +168,49 @@ module GraphHopper
           return_to_depot == o.return_to_depot &&
           earliest_start == o.earliest_start &&
           latest_end == o.latest_end &&
-          skills == o.skills
+          skills == o.skills &&
+          max_distance == o.max_distance &&
+          max_driving_time == o.max_driving_time &&
+          max_jobs == o.max_jobs &&
+          max_activities == o.max_activities
     end
 
     # @see the `==` method
+    # @param [Object] Object to be compared
     def eql?(o)
       self == o
     end
 
-    # Calculate hash code according to all attributes.
+    # Calculates hash code according to all attributes.
+    # @return [Fixnum] Hash code
     def hash
-      [vehicle_id, type_id, start_address, end_address, _break, return_to_depot, earliest_start, latest_end, skills].hash
+      [vehicle_id, type_id, start_address, end_address, _break, return_to_depot, earliest_start, latest_end, skills, max_distance, max_driving_time, max_jobs, max_activities].hash
     end
 
-    # build the object from hash
+    # Builds the object from hash
+    # @param [Hash] attributes Model attributes in the form of hash
+    # @return [Object] Returns the model itself
     def build_from_hash(attributes)
       return nil unless attributes.is_a?(Hash)
       self.class.swagger_types.each_pair do |key, type|
-        if type =~ /^Array<(.*)>/i
+        if type =~ /\AArray<(.*)>/i
+          # check to ensure the input is an array given that the the attribute
+          # is documented as an array but the input is not
           if attributes[self.class.attribute_map[key]].is_a?(Array)
             self.send("#{key}=", attributes[self.class.attribute_map[key]].map{ |v| _deserialize($1, v) } )
-          else
-            #TODO show warning in debug mode
           end
         elsif !attributes[self.class.attribute_map[key]].nil?
           self.send("#{key}=", _deserialize(type, attributes[self.class.attribute_map[key]]))
-        else
-          # data not found in attributes(hash), not an issue as the data can be optional
-        end
+        end # or else data not found in attributes(hash), not an issue as the data can be optional
       end
 
       self
     end
 
+    # Deserializes the data based on type
+    # @param string type Data type
+    # @param string value Value to be deserialized
+    # @return [Object] Deserialized data
     def _deserialize(type, value)
       case type.to_sym
       when :DateTime
@@ -172,15 +224,18 @@ module GraphHopper
       when :Float
         value.to_f
       when :BOOLEAN
-        if value =~ /^(true|t|yes|y|1)$/i
+        if value.to_s =~ /\A(true|t|yes|y|1)\z/i
           true
         else
           false
         end
+      when :Object
+        # generic object (usually a Hash), return directly
+        value
       when /\AArray<(?<inner_type>.+)>\z/
         inner_type = Regexp.last_match[:inner_type]
         value.map { |v| _deserialize(inner_type, v) }
-      when /\AHash<(?<k_type>.+), (?<v_type>.+)>\z/
+      when /\AHash<(?<k_type>.+?), (?<v_type>.+)>\z/
         k_type = Regexp.last_match[:k_type]
         v_type = Regexp.last_match[:v_type]
         {}.tap do |hash|
@@ -189,21 +244,25 @@ module GraphHopper
           end
         end
       else # model
-        _model = GraphHopper.const_get(type).new
-        _model.build_from_hash(value)
+        temp_model = GraphHopper.const_get(type).new
+        temp_model.build_from_hash(value)
       end
     end
 
+    # Returns the string representation of the object
+    # @return [String] String presentation of the object
     def to_s
       to_hash.to_s
     end
 
-    # to_body is an alias to to_body (backward compatibility))
+    # to_body is an alias to to_hash (backward compatibility)
+    # @return [Hash] Returns the object in the form of hash
     def to_body
       to_hash
     end
 
-    # return the object in the form of hash
+    # Returns the object in the form of hash
+    # @return [Hash] Returns the object in the form of hash
     def to_hash
       hash = {}
       self.class.attribute_map.each_pair do |attr, param|
@@ -214,8 +273,10 @@ module GraphHopper
       hash
     end
 
-    # Method to output non-array value in the form of hash
+    # Outputs non-array value in the form of hash
     # For object, use to_hash. Otherwise, just return the value
+    # @param [Object] value Any valid value
+    # @return [Hash] Returns the value in the form of hash
     def _to_hash(value)
       if value.is_a?(Array)
         value.compact.map{ |v| _to_hash(v) }
@@ -231,4 +292,5 @@ module GraphHopper
     end
 
   end
+
 end

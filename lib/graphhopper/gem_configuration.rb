@@ -1,7 +1,7 @@
 require 'uri'
 
 module GraphHopper
-  class Configuration
+  class GemConfiguration
     # Defines url scheme
     attr_accessor :scheme
 
@@ -64,7 +64,12 @@ module GraphHopper
     # Default to 0 (never times out).
     attr_accessor :timeout
 
-    ### TLS/SSL
+    # Set this to false to skip client side validation in the operation.
+    # Default to true.
+    # @return [true, false]
+    attr_accessor :client_side_validation
+
+    ### TLS/SSL setting
     # Set this to false to skip verifying SSL certificate when calling API from https server.
     # Default to true.
     #
@@ -73,6 +78,16 @@ module GraphHopper
     # @return [true, false]
     attr_accessor :verify_ssl
 
+    ### TLS/SSL setting
+    # Set this to false to skip verifying SSL host name
+    # Default to true.
+    #
+    # @note Do NOT set it to false in production code, otherwise you would face multiple types of cryptographic attacks.
+    #
+    # @return [true, false]
+    attr_accessor :verify_ssl_host
+
+    ### TLS/SSL setting
     # Set this to customize the certificate file to verify the peer.
     #
     # @return [String] the path to the certificate file
@@ -81,11 +96,20 @@ module GraphHopper
     # https://github.com/typhoeus/typhoeus/blob/master/lib/typhoeus/easy_factory.rb#L145
     attr_accessor :ssl_ca_cert
 
+    ### TLS/SSL setting
     # Client certificate file (for client certificate)
     attr_accessor :cert_file
 
+    ### TLS/SSL setting
     # Client private key file (for client certificate)
     attr_accessor :key_file
+
+    # Set this to customize parameters encoding of array parameter with multi collectionFormat.
+    # Default to nil.
+    #
+    # @see The params_encoding option of Ethon. Related source code:
+    # https://github.com/typhoeus/ethon/blob/master/lib/ethon/easy/queryable.rb#L96
+    attr_accessor :params_encoding
 
     attr_accessor :inject_format
 
@@ -94,11 +118,14 @@ module GraphHopper
     def initialize
       @scheme = 'https'
       @host = 'graphhopper.com'
-      @base_path = '/api/1/vrp'
+      @base_path = '/api/1'
       @api_key = {}
       @api_key_prefix = {}
       @timeout = 60
+      @client_side_validation = true
       @verify_ssl = true
+      @verify_ssl_host = true
+      @params_encoding = nil
       @cert_file = nil
       @key_file = nil
       @debugging = false
@@ -109,9 +136,9 @@ module GraphHopper
       yield(self) if block_given?
     end
 
-    # The default Configuration object.
+    # The default GemConfiguration object.
     def self.default
-      @@default ||= Configuration.new
+      @@default ||= GemConfiguration.new
     end
 
     def configure

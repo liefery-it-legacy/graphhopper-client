@@ -15,7 +15,7 @@ module GraphHopper
     # @param [Hash] opts the optional parameters
     # @return [Response]
     def get_solution(key, job_id, opts = {})
-      data, status_code, headers = get_solution_with_http_info(key, job_id, opts)
+      data, _status_code, _headers = get_solution_with_http_info(key, job_id, opts)
       return data
     end
 
@@ -27,17 +27,18 @@ module GraphHopper
     # @return [Array<(Response, Fixnum, Hash)>] Response data, response status code and response headers
     def get_solution_with_http_info(key, job_id, opts = {})
       if @api_client.config.debugging
-        @api_client.config.logger.debug "Calling API: SolutionApi#get_solution ..."
+        @api_client.config.logger.debug "Calling API: SolutionApi.get_solution ..."
       end
-      
       # verify the required parameter 'key' is set
-      fail "Missing the required parameter 'key' when calling get_solution" if key.nil?
-      
+      if @api_client.config.client_side_validation && key.nil?
+        fail ArgumentError, "Missing the required parameter 'key' when calling SolutionApi.get_solution"
+      end
       # verify the required parameter 'job_id' is set
-      fail "Missing the required parameter 'job_id' when calling get_solution" if job_id.nil?
-      
+      if @api_client.config.client_side_validation && job_id.nil?
+        fail ArgumentError, "Missing the required parameter 'job_id' when calling SolutionApi.get_solution"
+      end
       # resource path
-      path = "/solution/{jobId}".sub('{format}','json').sub('{' + 'jobId' + '}', job_id.to_s)
+      local_var_path = "/vrp/solution/{jobId}".sub('{' + 'jobId' + '}', job_id.to_s)
 
       # query parameters
       query_params = {}
@@ -45,24 +46,18 @@ module GraphHopper
 
       # header parameters
       header_params = {}
-
       # HTTP header 'Accept' (if needed)
-      _header_accept = ['application/json']
-      _header_accept_result = @api_client.select_header_accept(_header_accept) and header_params['Accept'] = _header_accept_result
-
+      header_params['Accept'] = @api_client.select_header_accept(['application/json'])
       # HTTP header 'Content-Type'
-      _header_content_type = ['application/json']
-      header_params['Content-Type'] = @api_client.select_header_content_type(_header_content_type)
+      header_params['Content-Type'] = @api_client.select_header_content_type(['application/json'])
 
       # form parameters
       form_params = {}
 
       # http body (model)
       post_body = nil
-      
-
-      auth_names = ['api_key']
-      data, status_code, headers = @api_client.call_api(:GET, path,
+      auth_names = []
+      data, status_code, headers = @api_client.call_api(:GET, local_var_path,
         :header_params => header_params,
         :query_params => query_params,
         :form_params => form_params,
@@ -76,7 +71,3 @@ module GraphHopper
     end
   end
 end
-
-
-
-
