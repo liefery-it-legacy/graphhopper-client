@@ -4,6 +4,7 @@ require 'logger'
 require 'tempfile'
 require 'typhoeus'
 require 'uri'
+require "zlib"
 
 module GraphHopper
   class ApiClient
@@ -23,6 +24,7 @@ module GraphHopper
       @user_agent = "Swagger-Codegen/#{VERSION}/ruby"
       @default_headers = {
         'Content-Type' => "application/json",
+        'Content-Encoding' => "gzip",
         'User-Agent' => @user_agent
       }
     end
@@ -277,7 +279,8 @@ module GraphHopper
       else
         data = nil
       end
-      data
+
+      Zlib::Deflate.deflate(data)
     end
 
     # Update hearder and query params based on authentication settings.
