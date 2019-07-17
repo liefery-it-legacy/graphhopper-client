@@ -16,6 +16,8 @@ module GraphHopper
     # @return [Hash]
     attr_accessor :default_headers
 
+    attr_accessor :use_compression
+
     # Initializes the ApiClient
     # @option config [GemConfiguration] GemConfiguration for initializing the object,
     # default to GemConfiguration.default
@@ -26,6 +28,7 @@ module GraphHopper
         'Content-Type' => "application/json",
         'User-Agent' => @user_agent
       }
+      @use_compression = false
     end
 
     def self.default
@@ -330,6 +333,14 @@ module GraphHopper
       # use JSON when present, otherwise use the first one
       json_content_type = content_types.find { |s| json_mime?(s) }
       return json_content_type || content_types.first
+    end
+
+    # Return Content-Encoding header based on use_compression
+    # @return [String] the Content-Encoding header
+    def select_header_content_encoding
+      return unless use_compression
+
+      'gzip'
     end
 
     # Convert object (array, hash, object, etc) to JSON string.
