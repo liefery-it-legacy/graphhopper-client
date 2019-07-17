@@ -280,7 +280,11 @@ module GraphHopper
         data = nil
       end
 
-      Zlib::Deflate.deflate(data)
+      if data
+        data = Zlib.gzip(data)
+      end
+
+      data
     end
 
     # Update hearder and query params based on authentication settings.
