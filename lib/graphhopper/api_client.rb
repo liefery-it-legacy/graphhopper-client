@@ -24,7 +24,6 @@ module GraphHopper
       @user_agent = "Swagger-Codegen/#{VERSION}/ruby"
       @default_headers = {
         'Content-Type' => "application/json",
-        'Content-Encoding' => "gzip",
         'User-Agent' => @user_agent
       }
     end
@@ -280,7 +279,7 @@ module GraphHopper
         data = nil
       end
 
-      if data
+      if data && header_params['Content-Encoding'] == 'gzip'
         data = Zlib.gzip(data)
       end
 
