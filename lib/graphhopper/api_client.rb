@@ -282,7 +282,7 @@ module GraphHopper
         data = nil
       end
 
-      if data && header_params['Content-Encoding'] == 'gzip'
+      if data && use_compression
         data = Zlib.gzip(data)
       end
 
