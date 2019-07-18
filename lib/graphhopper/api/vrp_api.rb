@@ -6,6 +6,7 @@ module GraphHopper
 
     def initialize(api_client = ApiClient.default)
       @api_client = api_client
+      @api_client.use_compression = true
     end
 
     # Solves vehicle routing problems
@@ -50,6 +51,8 @@ module GraphHopper
       header_params['Accept'] = @api_client.select_header_accept(['application/json'])
       # HTTP header 'Content-Type'
       header_params['Content-Type'] = @api_client.select_header_content_type(['application/json'])
+      # HTTP header 'Content-Encoding'
+      header_params['Content-Encoding'] = @api_client.select_header_content_encoding
 
       # form parameters
       form_params = {}
